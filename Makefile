@@ -279,4 +279,5 @@ aks-deploy-hypershift:
 	pushd aks/hack && ./dev_env.sh && popd
 	./bin/hypershift install render > aks.yaml
 	kubectl apply -f aks.yaml
-	
+
+.PHONY aks-build-deploy: aks-build aks-deploy-hypershift
