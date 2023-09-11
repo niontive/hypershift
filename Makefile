@@ -278,12 +278,12 @@ aks-build: aks-hypershift-operator aks-control-plane-operator aks-product-cli hy
 aks-deploy-hypershift:
 	pushd aks/hack && ./dev_env.sh && popd
 	aks/hack/build_push_acr.sh
-	./bin/hypershift install render > aks.yaml
+	./bin/hypershift install --enable-conversion-webhook=false --enable-defaulting-webhook=false render > aks.yaml
 	kubectl create -f aks.yaml
 
 .PHONY aks-build-deploy: aks-build aks-deploy-hypershift
 
 .PHONY aks-clean:
-	kubectl delete -f aks.yaml
-	rm aks.yaml
-	rm -rf bin
+	- kubectl delete -f aks.yaml
+	- rm aks.yaml
+	- rm -rf bin
