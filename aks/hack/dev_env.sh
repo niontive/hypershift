@@ -13,7 +13,7 @@ check_command() {
 
 download_kubeconfig() {
     echo "Downloading kubeconfig..."
-    az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin
+    az aks get-credentials --resource-group "$RESOURCE_GROUP" --name "$CLUSTER_NAME" --admin
 }
 
 # Begin script execution

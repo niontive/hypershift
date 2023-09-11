@@ -35,3 +35,6 @@ vendor/**/.dockerignore
 # ignore util binaries
 /contrib/cleanzones/cleanzones
 /contrib/admission-tracer/admission-tracer
+
+# AKS
+aks.yaml
