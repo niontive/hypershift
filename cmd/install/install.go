@@ -609,10 +609,13 @@ func hyperShiftOperatorManifests(opts Options) ([]crclient.Object, error) {
 		objects = append(objects, serviceMonitor)
 	*/
 
-	recordingRule := assets.HypershiftRecordingRule{
-		Namespace: operatorNamespace,
-	}.Build()
-	objects = append(objects, recordingRule)
+	// AKS - Don't create prom rule for now
+	/*
+		recordingRule := assets.HypershiftRecordingRule{
+			Namespace: operatorNamespace,
+		}.Build()
+		objects = append(objects, recordingRule)
+	*/
 
 	if opts.SLOsAlerts {
 		alertingRule := assets.HypershiftAlertingRule{
