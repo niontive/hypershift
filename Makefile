@@ -253,3 +253,23 @@ ci-install-hypershift-private:
 .PHONY: ci-test-e2e
 ci-test-e2e:
 	hack/ci-test-e2e.sh ${CI_TESTS_RUN}
+
+# AKS
+# GO=GO111MODULE=on GOFLAGS=-mod=vendor go
+# GO_BUILD_RECIPE=CGO_ENABLED=0 $(GO) build $(GO_GCFLAGS)
+LINUX_GO_BUILD_RECIPE=GOOS=linux GOARCH=amd64 CGO_ENABLED=0 $(GO) build $(GO_GCFLAGS)
+
+.PHONY: aks-hypershift-operator
+aks-hypershift-operator:
+	$(LINUX_GO_BUILD_RECIPE) -o $(OUT_DIR)/hypershift-operator ./hypershift-operator
+
+.PHONY: aks-control-plane-operator
+aks-control-plane-operator:
+	$(LINUX_GO_BUILD_RECIPE) -o $(OUT_DIR)/control-plane-operator ./control-plane-operator
+
+.PHONY: aks-product-cli
+aks-product-cli:
+	$(LINUX_GO_BUILD_RECIPE) -o $(OUT_DIR)/hcp ./product-cli
+
+.PHONY: aks-build
+aks-build: aks-hypershift-operator aks-control-plane-operator aks-product-cli hypershift
