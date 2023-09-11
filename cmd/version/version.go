@@ -12,7 +12,9 @@ import (
 )
 
 var (
-	HypershiftImageBase = "quay.io/hypershift/hypershift-operator"
+	// AKS - use private registry
+	// HypershiftImageBase = "quay.io/hypershift/hypershift-operator"
+	HypershiftImageBase = "hypershiftacr.azurecr.io/hypershift-operator"
 	HypershiftImageTag  = "latest"
 	HyperShiftImage     = fmt.Sprintf("%s:%s", HypershiftImageBase, HypershiftImageTag)
 )
