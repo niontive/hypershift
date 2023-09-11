@@ -601,10 +601,13 @@ func hyperShiftOperatorManifests(opts Options) ([]crclient.Object, error) {
 	}.Build()
 	objects = append(objects, prometheusRoleBinding)
 
-	serviceMonitor := assets.HyperShiftServiceMonitor{
-		Namespace: operatorNamespace,
-	}.Build()
-	objects = append(objects, serviceMonitor)
+	// AKS - Don't create the service monitor for the operator
+	/*
+		serviceMonitor := assets.HyperShiftServiceMonitor{
+			Namespace: operatorNamespace,
+		}.Build()
+		objects = append(objects, serviceMonitor)
+	*/
 
 	recordingRule := assets.HypershiftRecordingRule{
 		Namespace: operatorNamespace,
