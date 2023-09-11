@@ -285,3 +285,4 @@ aks-deploy-hypershift:
 .PHONY aks-clean:
 	kubectl delete -f aks.yaml
 	rm aks.yaml
+	rm -rf bin
