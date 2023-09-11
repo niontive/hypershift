@@ -22,3 +22,4 @@ download_kubeconfig() {
 check_command "oc"
 check_command "kubectl"
 download_kubeconfig
+azure_login

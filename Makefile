@@ -277,6 +277,7 @@ aks-build: aks-hypershift-operator aks-control-plane-operator aks-product-cli hy
 .PHONY: aks-deploy-hypershift
 aks-deploy-hypershift:
 	pushd aks/hack && ./dev_env.sh && popd
+	aks/hack/build_push_acr.sh
 	./bin/hypershift install render > aks.yaml
 	kubectl create -f aks.yaml
 
