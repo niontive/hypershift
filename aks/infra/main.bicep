@@ -23,6 +23,9 @@ param acrName string = 'hypershiftacr'
 @description('ACR pull role ID')
 var acrPullRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions/', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
 
+@description('DNS zone name')
+var dnsZoneName = 'hypershift.azurequickstart.org'
+
 resource aks 'Microsoft.ContainerService/managedClusters@2023-06-01' = {
   name: clusterName
   location: location
@@ -58,5 +61,13 @@ resource acrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' 
   properties: {
     principalId: aks.properties.identityProfile.kubeletidentity.objectId
     roleDefinitionId: acrPullRoleId
+  }
+}
+
+resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' = {
+  name: dnsZoneName
+  location: 'global'
+  properties: {
+    zoneType: 'Public'
   }
 }
