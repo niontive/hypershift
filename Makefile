@@ -267,12 +267,8 @@ aks-hypershift-operator:
 aks-control-plane-operator:
 	$(LINUX_GO_BUILD_RECIPE) -o $(OUT_DIR)/control-plane-operator ./control-plane-operator
 
-.PHONY: aks-product-cli
-aks-product-cli:
-	$(LINUX_GO_BUILD_RECIPE) -o $(OUT_DIR)/hcp ./product-cli
-
 .PHONY: aks-build
-aks-build: aks-hypershift-operator aks-control-plane-operator aks-product-cli hypershift
+aks-build: product-cli hypershift
 
 .PHONY: aks-deploy-hypershift
 aks-deploy-hypershift:
