@@ -528,9 +528,10 @@ func (o HyperShiftOperatorDeployment) Build() *appsv1.Deployment {
 					ServiceAccountName: o.ServiceAccount.Name,
 					InitContainers: []corev1.Container{
 						{
-							Name:            "init-environment",
-							Image:           image,
-							ImagePullPolicy: corev1.PullIfNotPresent,
+							Name:  "init-environment",
+							Image: image,
+							// AKS - Always pull for dev purposes
+							ImagePullPolicy: corev1.PullAlways,
 							Command:         []string{"/usr/bin/hypershift-operator"},
 							Args:            []string{"init"},
 							SecurityContext: &corev1.SecurityContext{
@@ -555,8 +556,9 @@ func (o HyperShiftOperatorDeployment) Build() *appsv1.Deployment {
 									Type: corev1.SeccompProfileTypeRuntimeDefault,
 								},
 							},
-							Image:           image,
-							ImagePullPolicy: corev1.PullIfNotPresent,
+							Image: image,
+							// AKS - always pull for dev purposes
+							ImagePullPolicy: corev1.PullAlways,
 							Env:             envVars,
 							Command:         []string{"/usr/bin/hypershift-operator"},
 							Args:            args,
