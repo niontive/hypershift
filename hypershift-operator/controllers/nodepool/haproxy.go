@@ -50,13 +50,18 @@ func (r *NodePoolReconciler) isHAProxyIgnitionConfigManaged(ctx context.Context,
 		return false, "", fmt.Errorf("failed to get controlPlaneOperatorImage: %w", err)
 	}
 
-	controlPlaneOperatorImageMetadata, err := r.ImageMetadataProvider.ImageMetadata(ctx, controlPlaneOperatorImage, pullSecretBytes, hcluster.Spec.ImageContentSources)
-	if err != nil {
-		return false, "", fmt.Errorf("failed to look up image metadata for %s: %w", controlPlaneOperatorImage, err)
-	}
+	// AKS - No image metadata for now since private ACR
+	/*
+		controlPlaneOperatorImageMetadata, err := r.ImageMetadataProvider.ImageMetadata(ctx, controlPlaneOperatorImage, pullSecretBytes, hcluster.Spec.ImageContentSources)
+		if err != nil {
+			return false, "", fmt.Errorf("failed to look up image metadata for %s: %w", controlPlaneOperatorImage, err)
+		}
 
-	_, cpoSkips := util.ImageLabels(controlPlaneOperatorImageMetadata)[controlPlaneOperatorSkipsHAProxyConfigGenerationLabel]
-	return cpoSkips, controlPlaneOperatorImage, nil
+		_, cpoSkips := util.ImageLabels(controlPlaneOperatorImageMetadata)[controlPlaneOperatorSkipsHAProxyConfigGenerationLabel]
+		return cpoSkips, controlPlaneOperatorImage, nil
+	*/
+
+	return true, controlPlaneOperatorImage, nil
 }
 
 func (r *NodePoolReconciler) reconcileHAProxyIgnitionConfig(ctx context.Context, componentImages map[string]string, hcluster *hyperv1.HostedCluster, controlPlaneOperatorImage string) (cfg string, missing bool, err error) {
