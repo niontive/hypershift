@@ -1036,7 +1036,7 @@ func (r *HostedClusterReconciler) reconcile(ctx context.Context, req ctrl.Reques
 			cpoHasUtilities = true
 		}
 	*/
-	cpoHasUtilities := false
+	cpoHasUtilities := true
 
 	utilitiesImage := controlPlaneOperatorImage
 	if !cpoHasUtilities {
@@ -1057,7 +1057,7 @@ func (r *HostedClusterReconciler) reconcile(ctx context.Context, req ctrl.Reques
 	controlPlaneOperatorManagesMachineAutoscaler := true
 	controlPlaneOperatorManagesMachineApprover := true
 	controlPlaneOperatorAppliesManagementKASNetworkPolicyLabel := true
-	useRestrictedPSA := true
+	useRestrictedPSA := false
 
 	// Reconcile the hosted cluster namespace
 	_, err = createOrUpdate(ctx, r.Client, controlPlaneNamespace, func() error {
