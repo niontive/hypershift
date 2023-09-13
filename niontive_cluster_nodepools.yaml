@@ -6,7 +6,6 @@ metadata:
   name: niontive-cluster
   namespace: clusters
 spec:
-  arch: amd64
   clusterName: niontive-cluster
   management:
     autoRepair: false
