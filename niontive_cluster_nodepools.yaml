@@ -1,0 +1,26 @@
+---
+apiVersion: hypershift.openshift.io/v1beta1
+kind: NodePool
+metadata:
+  creationTimestamp: null
+  name: niontive-cluster
+  namespace: clusters
+spec:
+  arch: amd64
+  clusterName: niontive-cluster
+  management:
+    autoRepair: false
+    upgradeType: Replace
+  nodeDrainTimeout: 0s
+  platform:
+    azure:
+      diskSizeGB: 120
+      imageID: /subscriptions/0cc1cafa-578f-4fa5-8d6b-ddfd8d82e6ea/resourceGroups/niontive-cluster-niontive-cluster-8lgth/providers/Microsoft.Compute/images/rhcos.x86_64.vhd
+      vmsize: Standard_D4s_v4
+    type: Azure
+  release:
+    image: quay.io/openshift-release-dev/ocp-release@sha256:73946971c03b43a0dc6f7b0946b26a177c2f3c9d37105441315b4e3359373a55
+  replicas: 1
+status:
+  replicas: 0
+---
