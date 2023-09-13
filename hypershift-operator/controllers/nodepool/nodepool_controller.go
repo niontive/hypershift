@@ -2587,24 +2587,32 @@ func setExpirationTimestampOnToken(ctx context.Context, c client.Client, tokenSe
 }
 
 func (r *NodePoolReconciler) detectCPOCapabilities(ctx context.Context, hostedCluster *hyperv1.HostedCluster) (*CPOCapabilities, error) {
-	pullSecretBytes, err := r.getPullSecretBytes(ctx, hostedCluster)
-	if err != nil {
-		return nil, err
-	}
-	controlPlaneOperatorImage, err := hostedcluster.GetControlPlaneOperatorImage(ctx, hostedCluster, r.ReleaseProvider, r.HypershiftOperatorImage, pullSecretBytes)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get controlPlaneOperatorImage: %w", err)
-	}
+	// AKS - no support for image metadata
+	/*
+		pullSecretBytes, err := r.getPullSecretBytes(ctx, hostedCluster)
+		if err != nil {
+			return nil, err
+		}
+		controlPlaneOperatorImage, err := hostedcluster.GetControlPlaneOperatorImage(ctx, hostedCluster, r.ReleaseProvider, r.HypershiftOperatorImage, pullSecretBytes)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get controlPlaneOperatorImage: %w", err)
+		}
 
-	controlPlaneOperatorImageMetadata, err := r.ImageMetadataProvider.ImageMetadata(ctx, controlPlaneOperatorImage, pullSecretBytes, hostedCluster.Spec.ImageContentSources)
-	if err != nil {
-		return nil, fmt.Errorf("failed to look up image metadata for %s: %w", controlPlaneOperatorImage, err)
-	}
+			controlPlaneOperatorImageMetadata, err := r.ImageMetadataProvider.ImageMetadata(ctx, controlPlaneOperatorImage, pullSecretBytes, hostedCluster.Spec.ImageContentSources)
+			if err != nil {
+				return nil, fmt.Errorf("failed to look up image metadata for %s: %w", controlPlaneOperatorImage, err)
+			}
 
-	imageLabels := supportutil.ImageLabels(controlPlaneOperatorImageMetadata)
-	result := &CPOCapabilities{}
-	_, result.DecompressAndDecodeConfig = imageLabels[controlPlaneOperatorManagesDecompressAndDecodeConfig]
-	_, result.CreateDefaultAWSSecurityGroup = imageLabels[controlPlaneOperatorCreatesDefaultAWSSecurityGroup]
+			imageLabels := supportutil.ImageLabels(controlPlaneOperatorImageMetadata)
+			result := &CPOCapabilities{}
+			_, result.DecompressAndDecodeConfig = imageLabels[controlPlaneOperatorManagesDecompressAndDecodeConfig]
+			_, result.CreateDefaultAWSSecurityGroup = imageLabels[controlPlaneOperatorCreatesDefaultAWSSecurityGroup]
+	*/
+
+	result := &CPOCapabilities{
+		DecompressAndDecodeConfig:     true,
+		CreateDefaultAWSSecurityGroup: false,
+	}
 
 	return result, nil
 }
