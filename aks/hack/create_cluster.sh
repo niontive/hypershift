@@ -15,4 +15,5 @@ cluster_name="$1"
                                       --base-domain "$base_domain" \
                                       --pull-secret "$pull_secret" \
                                       --name "$cluster_name" \
-                                      --azure-creds "$credentials"                
+                                      --azure-creds "$credentials" \
+                                      --generate-ssh               
