@@ -61,7 +61,7 @@ func (r *NodePoolReconciler) isHAProxyIgnitionConfigManaged(ctx context.Context,
 		return cpoSkips, controlPlaneOperatorImage, nil
 	*/
 
-	return true, controlPlaneOperatorImage, nil
+	return false, controlPlaneOperatorImage, nil
 }
 
 func (r *NodePoolReconciler) reconcileHAProxyIgnitionConfig(ctx context.Context, componentImages map[string]string, hcluster *hyperv1.HostedCluster, controlPlaneOperatorImage string) (cfg string, missing bool, err error) {
