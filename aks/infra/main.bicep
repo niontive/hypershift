@@ -43,6 +43,15 @@ resource aks 'Microsoft.ContainerService/managedClusters@2023-06-01' = {
         osType: 'Linux'
         mode: 'System'
       }
+      {
+        name: 'hcp'
+        osDiskSizeGB: osDiskSizeGB
+        count: 1
+        vmSize: agentVMSize
+        osType: 'Linux'
+        mode: 'User'
+        enableNodePublicIP: true
+      }
     ]
   }
 }

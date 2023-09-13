@@ -16,4 +16,5 @@ cluster_name="$1"
                                       --pull-secret "$pull_secret" \
                                       --name "$cluster_name" \
                                       --azure-creds "$credentials" \
+                                      --node-selector "hypershift=niontive" \
                                       --generate-ssh               
