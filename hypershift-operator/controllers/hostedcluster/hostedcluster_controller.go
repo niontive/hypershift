@@ -1025,24 +1025,39 @@ func (r *HostedClusterReconciler) reconcile(ctx context.Context, req ctrl.Reques
 	if err != nil {
 		return ctrl.Result{}, fmt.Errorf("failed to get controlPlaneOperatorImage: %w", err)
 	}
-	controlPlaneOperatorImageMetadata, err := r.ImageMetadataProvider.ImageMetadata(ctx, controlPlaneOperatorImage, pullSecretBytes, hcluster.Spec.ImageContentSources)
-	if err != nil {
-		return ctrl.Result{}, fmt.Errorf("failed to look up image metadata for %s: %w", controlPlaneOperatorImage, err)
-	}
-	cpoHasUtilities := false
-	if _, hasLabel := hyperutil.ImageLabels(controlPlaneOperatorImageMetadata)[controlPlaneOperatorSubcommandsLabel]; hasLabel {
-		cpoHasUtilities = true
-	}
+	// AKS - Don't get image metadata since we use private ACR
+	/*
+		controlPlaneOperatorImageMetadata, err := r.ImageMetadataProvider.ImageMetadata(ctx, controlPlaneOperatorImage, pullSecretBytes, hcluster.Spec.ImageContentSources)
+		if err != nil {
+			return ctrl.Result{}, fmt.Errorf("failed to look up image metadata for %s: %w", controlPlaneOperatorImage, err)
+		}
+		cpoHasUtilities := false
+		if _, hasLabel := hyperutil.ImageLabels(controlPlaneOperatorImageMetadata)[controlPlaneOperatorSubcommandsLabel]; hasLabel {
+			cpoHasUtilities = true
+		}
+	*/
+	cpoHasUtilities := true
+
 	utilitiesImage := controlPlaneOperatorImage
 	if !cpoHasUtilities {
 		utilitiesImage = r.HypershiftOperatorImage
 	}
-	_, ignitionServerHasHealthzHandler := hyperutil.ImageLabels(controlPlaneOperatorImageMetadata)[ignitionServerHealthzHandlerLabel]
-	_, controlplaneOperatorManagesIgnitionServer := hyperutil.ImageLabels(controlPlaneOperatorImageMetadata)[controlplaneOperatorManagesIgnitionServerLabel]
-	_, controlPlaneOperatorManagesMachineAutoscaler := hyperutil.ImageLabels(controlPlaneOperatorImageMetadata)[controlPlaneOperatorManagesMachineAutoscaler]
-	_, controlPlaneOperatorManagesMachineApprover := hyperutil.ImageLabels(controlPlaneOperatorImageMetadata)[controlPlaneOperatorManagesMachineApprover]
-	_, controlPlaneOperatorAppliesManagementKASNetworkPolicyLabel := hyperutil.ImageLabels(controlPlaneOperatorImageMetadata)[controlPlaneOperatorAppliesManagementKASNetworkPolicyLabel]
-	_, useRestrictedPSA := hyperutil.ImageLabels(controlPlaneOperatorImageMetadata)[useRestrictedPodSecurityLabel]
+	// AKS - set these to true since no image metadata
+	/*
+		_, ignitionServerHasHealthzHandler := hyperutil.ImageLabels(controlPlaneOperatorImageMetadata)[ignitionServerHealthzHandlerLabel]
+		_, controlplaneOperatorManagesIgnitionServer := hyperutil.ImageLabels(controlPlaneOperatorImageMetadata)[controlplaneOperatorManagesIgnitionServerLabel]
+		_, controlPlaneOperatorManagesMachineAutoscaler := hyperutil.ImageLabels(controlPlaneOperatorImageMetadata)[controlPlaneOperatorManagesMachineAutoscaler]
+		_, controlPlaneOperatorManagesMachineApprover := hyperutil.ImageLabels(controlPlaneOperatorImageMetadata)[controlPlaneOperatorManagesMachineApprover]
+		_, controlPlaneOperatorAppliesManagementKASNetworkPolicyLabel := hyperutil.ImageLabels(controlPlaneOperatorImageMetadata)[controlPlaneOperatorAppliesManagementKASNetworkPolicyLabel]
+		_, useRestrictedPSA := hyperutil.ImageLabels(controlPlaneOperatorImageMetadata)[useRestrictedPodSecurityLabel]
+	*/
+
+	ignitionServerHasHealthzHandler := true
+	controlplaneOperatorManagesIgnitionServer := true
+	controlPlaneOperatorManagesMachineAutoscaler := true
+	controlPlaneOperatorManagesMachineApprover := true
+	controlPlaneOperatorAppliesManagementKASNetworkPolicyLabel := true
+	useRestrictedPSA := false
 
 	// Reconcile the hosted cluster namespace
 	_, err = createOrUpdate(ctx, r.Client, controlPlaneNamespace, func() error {
