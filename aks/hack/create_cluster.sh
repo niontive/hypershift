@@ -10,8 +10,7 @@ release_image="quay.io/openshift-release-dev/ocp-release@sha256:73946971c03b43a0
 
 cluster_name="$1"
 
-./bin/hypershift create cluster azure --control-plane-operator-image "$control_plane_image" \
-                                      --release-image "$release_image" \
+./bin/hypershift create cluster azure --release-image "$release_image" \
                                       --base-domain "$base_domain" \
                                       --pull-secret "$pull_secret" \
                                       --name "$cluster_name" \
