@@ -13,6 +13,13 @@ create_deployment() {
         --resource-group "$RESOURCE_GROUP" \
         --template-file "$BICEP_FILE" \
         --parameters clusterName="$CLUSTER_NAME" acrName="$ACR_NAME"
+
+    echo "Deploy bicep file calico.bicep..."
+    az deployment group create \
+        --resource-group "$RESOURCE_GROUP" \
+        --template-file "calico.bicep" \
+        --parameters clusterName="hypershiftCalicoCluster" acrName="$ACR_NAME"
+
 }
 
 create_resource_group() {

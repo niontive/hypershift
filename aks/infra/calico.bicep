@@ -1,5 +1,5 @@
 @description('The name of the Managed Cluster resource.')
-param clusterName string = 'hypershiftCluster'
+param clusterName string = 'hypershiftCalicoCluster'
 
 @description('The location of the Managed Cluster resource.')
 param location string = resourceGroup().location
@@ -43,7 +43,23 @@ resource aks 'Microsoft.ContainerService/managedClusters@2023-06-01' = {
         osType: 'Linux'
         mode: 'System'
       }
+      {
+        name: 'hypershift'
+        osDiskSizeGB: osDiskSizeGB
+        count: 1
+        vmSize: 'Standard_D32ads_v5'
+        osType: 'Linux'
+        mode: 'User'
+        nodeLabels: {
+          'hypershift': 'niontive'
+        }
+        enableAutoScaling: false
+      }
     ]
+    networkProfile: {
+      loadBalancerSku: 'Standard'
+      networkPlugin: 'none'
+    }
   }
 }
 
