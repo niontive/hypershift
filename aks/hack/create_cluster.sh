@@ -4,6 +4,7 @@ pull_secret="pull-secret.txt"
 credentials="credentials.txt"
 base_domain="hypershift.azurequickstart.org"
 control_plane_image="hypershiftacr.azurecr.io/control-plane-operator:latest"
+node_selector="hypershift=niontive"
 
 # Image 4.13.12-x86_64
 release_image="quay.io/openshift-release-dev/ocp-release@sha256:73946971c03b43a0dc6f7b0946b26a177c2f3c9d37105441315b4e3359373a55"
@@ -15,5 +16,5 @@ cluster_name="$1"
                                       --pull-secret "$pull_secret" \
                                       --name "$cluster_name" \
                                       --azure-creds "$credentials" \
-                                      --node-selector "hypershift=niontive" \
+                                      --node-selector "$node_selector" \
                                       --generate-ssh               
