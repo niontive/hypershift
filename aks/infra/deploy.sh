@@ -19,11 +19,11 @@ create_resource_group() {
 
 sp_permissions() {
     az role assignment create --role "$CONTRIBUTOR_ROLE" \
-                            --assignee "$SP" \
+                            --assignee "$SP_CLIENT_ID" \
                             --scope "/subscriptions/$SUBSCRIPTION"
 
     az role assignment create --role "$RBAC_ROLE" \
-                            --assignee "$SP" \
+                            --assignee "$SP_CLIENT_ID" \
                             --scope "/subscriptions/$SUBSCRIPTION"
 }
 
