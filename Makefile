@@ -259,6 +259,10 @@ ci-test-e2e:
 # GO_BUILD_RECIPE=CGO_ENABLED=0 $(GO) build $(GO_GCFLAGS)
 LINUX_GO_BUILD_RECIPE=GOOS=linux GOARCH=amd64 CGO_ENABLED=0 $(GO) build $(GO_GCFLAGS)
 
+.PHONY: aks-infra
+aks-infra:
+	pushd aks/hack/infra && ./deploy.sh && popd
+
 .PHONY: aks-hypershift-operator
 aks-hypershift-operator:
 	$(LINUX_GO_BUILD_RECIPE) -o $(OUT_DIR)/hypershift-operator ./hypershift-operator

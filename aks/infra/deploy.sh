@@ -9,7 +9,7 @@ create_deployment() {
     az deployment group create \
         --resource-group "$RESOURCE_GROUP" \
         --template-file "$BICEP_FILE" \
-        --parameters clusterName="$CLUSTER_NAME" acrName="$ACR_NAME"
+        --parameters clusterName="$CLUSTER_NAME" acrName="$ACR_NAME" dnsZoneName="$DNS_ZONE_NAME"
 }
 
 create_resource_group() {
