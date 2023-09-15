@@ -447,16 +447,20 @@ func (r *NodePoolReconciler) reconcile(ctx context.Context, hcluster *hyperv1.Ho
 		ObservedGeneration: nodePool.Generation,
 	})
 
-	// Validate arch platform support
-	if (nodePool.Spec.Arch != "") && (nodePool.Spec.Platform.Type != hyperv1.AWSPlatform) {
-		SetStatusCondition(&nodePool.Status.Conditions, hyperv1.NodePoolCondition{
-			Type:               hyperv1.NodePoolValidArchPlatform,
-			Status:             corev1.ConditionFalse,
-			Reason:             hyperv1.NodePoolValidationFailedReason,
-			Message:            fmt.Sprintf("Arch flag is not supported for platform: %s", nodePool.Spec.Platform.Type),
-			ObservedGeneration: nodePool.Generation,
-		})
-	}
+	// AKS - arch bug
+
+	/*
+		// Validate arch platform support
+		if (nodePool.Spec.Arch != "") && (nodePool.Spec.Platform.Type != hyperv1.AWSPlatform) {
+			SetStatusCondition(&nodePool.Status.Conditions, hyperv1.NodePoolCondition{
+				Type:               hyperv1.NodePoolValidArchPlatform,
+				Status:             corev1.ConditionFalse,
+				Reason:             hyperv1.NodePoolValidationFailedReason,
+				Message:            fmt.Sprintf("Arch flag is not supported for platform: %s", nodePool.Spec.Platform.Type),
+				ObservedGeneration: nodePool.Generation,
+			})
+		}
+	*/
 
 	// Validate AWS platform specific input
 	var ami string
@@ -565,7 +569,9 @@ func (r *NodePoolReconciler) reconcile(ctx context.Context, hcluster *hyperv1.Ho
 			ObservedGeneration: nodePool.Generation,
 		})
 		// We watch configmaps so we will get an event when these get created
-		return ctrl.Result{}, nil
+
+		// AKS - don't return here
+		// return ctrl.Result{}, nil
 	}
 	SetStatusCondition(&nodePool.Status.Conditions, hyperv1.NodePoolCondition{
 		Type:               hyperv1.NodePoolValidMachineConfigConditionType,

@@ -1,7 +1,6 @@
 package kas
 
 import (
-	"bytes"
 	"fmt"
 	"path"
 	"strconv"
@@ -19,7 +18,6 @@ import (
 	"github.com/openshift/hypershift/control-plane-operator/controllers/hostedcontrolplane/cloud/azure"
 	"github.com/openshift/hypershift/control-plane-operator/controllers/hostedcontrolplane/common"
 	"github.com/openshift/hypershift/control-plane-operator/controllers/hostedcontrolplane/manifests"
-	"github.com/openshift/hypershift/support/api"
 	"github.com/openshift/hypershift/support/certs"
 	"github.com/openshift/hypershift/support/config"
 	"github.com/openshift/hypershift/support/proxy"
@@ -155,11 +153,15 @@ func ReconcileKubeAPIServerDeployment(deployment *appsv1.Deployment,
 	if featureGateSpec != nil {
 		clusterFeatureGate.Spec = *featureGateSpec
 	}
-	featureGateBuffer := &bytes.Buffer{}
-	if err := api.YamlSerializer.Encode(&clusterFeatureGate, featureGateBuffer); err != nil {
-		return fmt.Errorf("failed to encode feature gates: %w", err)
-	}
-	featureGateYaml := featureGateBuffer.String()
+
+	// AKS
+	/*
+		featureGateBuffer := &bytes.Buffer{}
+		if err := api.YamlSerializer.Encode(&clusterFeatureGate, featureGateBuffer); err != nil {
+			return fmt.Errorf("failed to encode feature gates: %w", err)
+		}
+		featureGateYaml := featureGateBuffer.String()
+	*/
 
 	deployment.Spec.Template = corev1.PodTemplateSpec{
 		ObjectMeta: metav1.ObjectMeta{
@@ -179,11 +181,14 @@ func ReconcileKubeAPIServerDeployment(deployment *appsv1.Deployment,
 			TerminationGracePeriodSeconds: pointer.Int64(95),
 			SchedulerName:                 corev1.DefaultSchedulerName,
 			AutomountServiceAccountToken:  pointer.Bool(false),
-			InitContainers: []corev1.Container{
-				util.BuildContainer(kasContainerBootstrap(), buildKASContainerBootstrap(images.ClusterConfigOperator, payloadVersion, featureGateYaml)),
-			},
+			// AKS - lack of support for OpenShift API
+			/*
+				InitContainers: []corev1.Container{
+					util.BuildContainer(kasContainerBootstrap(), buildKASContainerBootstrap(images.ClusterConfigOperator, payloadVersion, featureGateYaml)),
+				},
+			*/
 			Containers: []corev1.Container{
-				util.BuildContainer(kasContainerApplyBootstrap(), buildKASContainerApplyBootstrap(images.CLI)),
+				// util.BuildContainer(kasContainerApplyBootstrap(), buildKASContainerApplyBootstrap(images.CLI)),
 				util.BuildContainer(kasContainerMain(), buildKASContainerMain(images.HyperKube, port, additionalNoProxyCIDRS)),
 				util.BuildContainer(konnectivityServerContainer(), buildKonnectivityServerContainer(images.KonnectivityServer, deploymentConfig.Replicas)),
 				{
