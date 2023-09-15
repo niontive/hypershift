@@ -52,9 +52,9 @@ resource aks 'Microsoft.ContainerService/managedClusters@2023-06-01' = {
         count: 1
         vmSize: hcpVMSize
         osType: 'Linux'
-        mode: 'System'
+        mode: 'User'
         nodeLabels: {
-          'hypershift': 'node'
+          'hypershift.poc': 'node'
         }
       }
     ]
