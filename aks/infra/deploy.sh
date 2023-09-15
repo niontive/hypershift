@@ -1,8 +1,6 @@
 #!/bin/bash
 
-# Environment
 BICEP_FILE="main.bicep"
-LOCATION="eastus"
 CONTRIBUTOR_ROLE="b24988ac-6180-42a0-ab88-20f7382dd24c"
 RBAC_ROLE="f58310d9-a9f6-439a-9e8d-f62e7b41a168"
 

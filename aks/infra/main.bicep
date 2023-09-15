@@ -14,8 +14,11 @@ param osDiskSizeGB int = 0
 @maxValue(50)
 param agentCount int = 3
 
-@description('The size of the Virtual Machine.')
-param agentVMSize string = 'standard_d2s_v3'
+@description('The size of the system Virtual Machine.')
+param systemVMSize string = 'standard_d2s_v3'
+
+@description('The size of the HCP vm')
+param hcpVMSize string = 'Standard_D32ads_v5'
 
 @description('The name of the Azure Container Registry.')
 param acrName string = 'hypershiftacr'
@@ -39,9 +42,20 @@ resource aks 'Microsoft.ContainerService/managedClusters@2023-06-01' = {
         name: 'agentpool'
         osDiskSizeGB: osDiskSizeGB
         count: agentCount
-        vmSize: agentVMSize
+        vmSize: systemVMSize
         osType: 'Linux'
         mode: 'System'
+      }
+      {
+        name: 'hcp'
+        osDiskSizeGB: osDiskSizeGB
+        count: 1
+        vmSize: hcpVMSize
+        osType: 'Linux'
+        mode: 'System'
+        nodeLabels: {
+          'hypershift': 'node'
+        }
       }
     ]
   }
