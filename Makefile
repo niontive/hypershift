@@ -261,7 +261,7 @@ LINUX_GO_BUILD_RECIPE=GOOS=linux GOARCH=amd64 CGO_ENABLED=0 $(GO) build $(GO_GCF
 
 .PHONY: aks-infra
 aks-infra:
-	pushd aks/hack/infra && ./deploy.sh && popd
+	pushd aks/infra && ./deploy.sh && popd
 
 .PHONY: aks-hypershift-operator
 aks-hypershift-operator:

@@ -23,11 +23,11 @@ param hcpVMSize string = 'Standard_D32ads_v5'
 @description('The name of the Azure Container Registry.')
 param acrName string = 'hypershiftacr'
 
+@description('DNS zone name')
+param dnsZoneName string = 'hypershift.azurequickstart.org'
+
 @description('ACR pull role ID')
 var acrPullRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions/', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
-
-@description('DNS zone name')
-var dnsZoneName = 'hypershift.azurequickstart.org'
 
 resource aks 'Microsoft.ContainerService/managedClusters@2023-06-01' = {
   name: clusterName
