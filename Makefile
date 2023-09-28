@@ -274,9 +274,15 @@ aks-control-plane-operator:
 .PHONY: aks-build
 aks-build: product-cli hypershift
 
+.PHONY: aks-hypershift-containers
+aks-hypershift-containers:
+	pushd aks/hack && ./dev_env.sh && popd
+	aks/hack/build_push_acr.sh
+
 .PHONY: aks-deploy-hypershift
 aks-deploy-hypershift:
 	pushd aks/hack && ./dev_env.sh && popd
+	source aks/env.sh
 	aks/hack/build_push_acr.sh
 	./bin/hypershift install --enable-conversion-webhook=false --enable-defaulting-webhook=false render > aks.yaml
 	kubectl create -f aks.yaml

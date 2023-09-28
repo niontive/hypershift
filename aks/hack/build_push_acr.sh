@@ -1,14 +1,13 @@
 #!/bin/bash
-
-ACR_NAME="hypershiftacr.azurecr.io"
-DOCKERTAG_HYPERSHIFT_OPERATOR="$ACR_NAME/hypershift-operator"
+FULL_ACR_NAME="$ACR_NAME.azurecr.io"
+DOCKERTAG_HYPERSHIFT_OPERATOR="$FULL_ACR_NAME/hypershift-operator"
 DOCKERFILE_HYPERSHIFT_OPERATOR="aks.hypershift-operator.Dockerfile"
-DOCKERTAG_HYPERSHIFT_CONTROL_PLANE="$ACR_NAME/control-plane-operator"
+DOCKERTAG_HYPERSHIFT_CONTROL_PLANE="$FULL_ACR_NAME/control-plane-operator"
 DOCKERFILE_HYPERSHIFT_CONTROL_PLANE="aks.hypershift-control-plane.Dockerfile"
 
 acr_login() {
     echo "Logging into ACR..."
-    az acr login --name "$ACR_NAME"
+    az acr login --name "$FULL_ACR_NAME"
 }
 
 push_hypershift_operator() {

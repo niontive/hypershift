@@ -17,7 +17,7 @@ download_kubeconfig() {
 }
 
 # Begin script execution
-. ../env.sh
+source ../env.sh
 
 check_command "oc"
 check_command "kubectl"
