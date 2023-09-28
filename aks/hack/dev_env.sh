@@ -19,7 +19,6 @@ download_kubeconfig() {
 # Begin script execution
 source ../env.sh
 
-check_command "oc"
 check_command "kubectl"
 download_kubeconfig
 azure_login

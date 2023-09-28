@@ -289,6 +289,11 @@ aks-build-deploy-hypershift: aks-build aks-deploy-hypershift
 
 .PHONY aks-build-deploy: aks-build aks-deploy-hypershift
 
+.PHONY: aks-create-cluster
+aks-create-cluster:
+	pushd aks/hack && ./dev_env.sh && popd 
+	./aks/hack/create_cluster.sh
+
 .PHONY aks-clean:
 	- kubectl delete -f aks.yaml
 	- rm aks.yaml
