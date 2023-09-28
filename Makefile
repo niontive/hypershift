@@ -281,11 +281,11 @@ aks-hypershift-containers:
 
 .PHONY: aks-deploy-hypershift
 aks-deploy-hypershift:
-	pushd aks/hack && ./dev_env.sh && popd
-	source aks/env.sh
-	aks/hack/build_push_acr.sh
-	./bin/hypershift install --enable-conversion-webhook=false --enable-defaulting-webhook=false render > aks.yaml
-	kubectl create -f aks.yaml
+	pushd aks/hack && ./dev_env.sh && popd 
+	./aks/hack/deploy-hypershift.sh
+
+.PHONY: aks-build-deploy-hypershift
+aks-build-deploy-hypershift: aks-build aks-deploy-hypershift
 
 .PHONY aks-build-deploy: aks-build aks-deploy-hypershift
 
